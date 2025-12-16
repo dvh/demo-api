@@ -1,0 +1,497 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Bier API",
+    "description": "API om te demonstreren hoe je eenvoudig, design-first, een API kunt ontwikkelen met de tools van developer.overheid.nl.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Team Developer Overheid",
+      "email": "developer.overheid@geonovum.nl",
+      "url": "https://github.com/orgs/developer-overheid-nl/discussions"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Brouwerijen",
+      "description": "Alle API operaties die bij brouwerijen horen."
+    },
+    {
+      "name": "Bieren",
+      "description": "Alle API operaties die bij bieren horen."
+    },
+    {
+      "name": "Stijlen",
+      "description": "Alle API operaties die bij stijlen horen."
+    }
+  ],
+  "paths": {
+    "/brouwerijen": {
+      "get": {
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "nano",
+                "micro",
+                "macro"
+              ]
+            }
+          }
+        ],
+        "operationId": "listBrouwerijen",
+        "description": "Endpoint om alle brouwerijen op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle brouwerijen ophalen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              },
+              "Link": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/Link"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brouwerij"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBrouwerijen",
+        "description": "Nieuwe brouwerij aanmaken",
+        "summary": "Nieuwe brouwerij aanmaken",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brouwerij"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/400"
+          }
+        }
+      }
+    },
+    "/brouwerijen/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "operationId": "retrieveBrouwerij",
+        "description": "Brouwerij ophalen",
+        "summary": "Brouwerij ophalen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brouwerij"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/404"
+          }
+        }
+      },
+      "put": {
+        "operationId": "editBrouwerij",
+        "description": "Brouwerij wijzigen",
+        "summary": "Brouwerij wijzigen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brouwerij"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/400"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeBrouwerij",
+        "description": "Brouwerij verwijderen",
+        "summary": "Brouwerij verwijderen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "204": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/204"
+          },
+          "404": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/404"
+          }
+        }
+      }
+    },
+    "/bieren": {
+      "get": {
+        "operationId": "listBieren",
+        "description": "Endpoint om alle bieren op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle bieren ophalen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              },
+              "Link": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/Link"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBieren",
+        "description": "Nieuwe bier aanmaken",
+        "summary": "Nieuwe bier aanmaken",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bier"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/400"
+          }
+        }
+      }
+    },
+    "/bieren/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "operationId": "retrieveBier",
+        "description": "Bier ophalen",
+        "summary": "Bier ophalen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bier"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/404"
+          }
+        }
+      },
+      "put": {
+        "operationId": "editBier",
+        "description": "Bier wijzigen",
+        "summary": "Bier wijzigen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bier"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/400"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeBier",
+        "description": "Bier verwijderen",
+        "summary": "Bier verwijderen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "204": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/204"
+          },
+          "404": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/404"
+          }
+        }
+      }
+    },
+    "/stijlen": {
+      "get": {
+        "operationId": "listStijlen",
+        "description": "Endpoint om alle stijlen op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle stijlen ophalen",
+        "tags": [
+          "Stijlen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              },
+              "Link": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/Link"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Stijl"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stijlen/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "operationId": "retrieveStijl",
+        "description": "Stijl ophalen",
+        "summary": "Stijl ophalen",
+        "tags": [
+          "Stijlen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/headers/API-Version"
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stijl"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "https://static.developer.overheid.nl/adr/components.yaml#/responses/404"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Brouwerij": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "nano",
+              "micro",
+              "macro"
+            ]
+          },
+          "naam": {
+            "type": "string",
+            "example": "Brouwtoren"
+          },
+          "adres": {
+            "$ref": "#/components/schemas/Adres"
+          }
+        },
+        "required": [
+          "type",
+          "naam"
+        ]
+      },
+      "Adres": {
+        "properties": {
+          "straat": {
+            "type": "string",
+            "example": "Waldeck Pyrmontsingel"
+          },
+          "huisnummer": {
+            "type": "number",
+            "example": 12
+          },
+          "postcode": {
+            "type": "string",
+            "example": "6521 BC"
+          },
+          "plaats": {
+            "type": "string",
+            "example": "Nijmegen"
+          }
+        }
+      },
+      "Bier": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+          },
+          "naam": {
+            "type": "string",
+            "example": "Weizen Tripel"
+          },
+          "alcoholPercentage": {
+            "type": "number",
+            "format": "double",
+            "example": 7.6
+          },
+          "stijl": {
+            "$ref": "#/components/schemas/Stijl"
+          },
+          "brouwerij": {
+            "$ref": "#/components/schemas/Brouwerij"
+          }
+        }
+      },
+      "Stijl": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          },
+          "naam": {
+            "type": "string",
+            "example": "Tripel"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "id": {
+        "name": "id",
+        "in": "path",
+        "description": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

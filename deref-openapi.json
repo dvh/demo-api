@@ -1,0 +1,1595 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Bier API",
+    "description": "API om te demonstreren hoe je eenvoudig, design-first, een API kunt ontwikkelen met de tools van developer.overheid.nl.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Team Developer Overheid",
+      "email": "developer.overheid@geonovum.nl",
+      "url": "https://github.com/orgs/developer-overheid-nl/discussions"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Brouwerijen",
+      "description": "Alle API operaties die bij brouwerijen horen."
+    },
+    {
+      "name": "Bieren",
+      "description": "Alle API operaties die bij bieren horen."
+    },
+    {
+      "name": "Stijlen",
+      "description": "Alle API operaties die bij stijlen horen."
+    }
+  ],
+  "paths": {
+    "/brouwerijen": {
+      "get": {
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "nano",
+                "micro",
+                "macro"
+              ]
+            }
+          }
+        ],
+        "operationId": "listBrouwerijen",
+        "description": "Endpoint om alle brouwerijen op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle brouwerijen ophalen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "nano",
+                          "micro",
+                          "macro"
+                        ]
+                      },
+                      "naam": {
+                        "type": "string",
+                        "example": "Brouwtoren"
+                      },
+                      "adres": {
+                        "properties": {
+                          "straat": {
+                            "type": "string",
+                            "example": "Waldeck Pyrmontsingel"
+                          },
+                          "huisnummer": {
+                            "type": "number",
+                            "example": 12
+                          },
+                          "postcode": {
+                            "type": "string",
+                            "example": "6521 BC"
+                          },
+                          "plaats": {
+                            "type": "string",
+                            "example": "Nijmegen"
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "naam"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBrouwerijen",
+        "description": "Nieuwe brouwerij aanmaken",
+        "summary": "Nieuwe brouwerij aanmaken",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "macro"
+                      ]
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Brouwtoren"
+                    },
+                    "adres": {
+                      "properties": {
+                        "straat": {
+                          "type": "string",
+                          "example": "Waldeck Pyrmontsingel"
+                        },
+                        "huisnummer": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "postcode": {
+                          "type": "string",
+                          "example": "6521 BC"
+                        },
+                        "plaats": {
+                          "type": "string",
+                          "example": "Nijmegen"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "naam"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "Bad request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Request validation failed"
+                    },
+                    "invalidParams": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "url"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "Invalid URI format"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/brouwerijen/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "retrieveBrouwerij",
+        "description": "Brouwerij ophalen",
+        "summary": "Brouwerij ophalen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "macro"
+                      ]
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Brouwtoren"
+                    },
+                    "adres": {
+                      "properties": {
+                        "straat": {
+                          "type": "string",
+                          "example": "Waldeck Pyrmontsingel"
+                        },
+                        "huisnummer": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "postcode": {
+                          "type": "string",
+                          "example": "6521 BC"
+                        },
+                        "plaats": {
+                          "type": "string",
+                          "example": "Nijmegen"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "naam"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Resource does not exist"
+          }
+        }
+      },
+      "put": {
+        "operationId": "editBrouwerij",
+        "description": "Brouwerij wijzigen",
+        "summary": "Brouwerij wijzigen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "macro"
+                      ]
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Brouwtoren"
+                    },
+                    "adres": {
+                      "properties": {
+                        "straat": {
+                          "type": "string",
+                          "example": "Waldeck Pyrmontsingel"
+                        },
+                        "huisnummer": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "postcode": {
+                          "type": "string",
+                          "example": "6521 BC"
+                        },
+                        "plaats": {
+                          "type": "string",
+                          "example": "Nijmegen"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "naam"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "Bad request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Request validation failed"
+                    },
+                    "invalidParams": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "url"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "Invalid URI format"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeBrouwerij",
+        "description": "Brouwerij verwijderen",
+        "summary": "Brouwerij verwijderen",
+        "tags": [
+          "Brouwerijen"
+        ],
+        "responses": {
+          "204": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Removed"
+          },
+          "404": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Resource does not exist"
+          }
+        }
+      }
+    },
+    "/bieren": {
+      "get": {
+        "operationId": "listBieren",
+        "description": "Endpoint om alle bieren op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle bieren ophalen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+                      },
+                      "naam": {
+                        "type": "string",
+                        "example": "Weizen Tripel"
+                      },
+                      "alcoholPercentage": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 7.6
+                      },
+                      "stijl": {
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                          },
+                          "naam": {
+                            "type": "string",
+                            "example": "Tripel"
+                          }
+                        }
+                      },
+                      "brouwerij": {
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "nano",
+                              "micro",
+                              "macro"
+                            ]
+                          },
+                          "naam": {
+                            "type": "string",
+                            "example": "Brouwtoren"
+                          },
+                          "adres": {
+                            "properties": {
+                              "straat": {
+                                "type": "string",
+                                "example": "Waldeck Pyrmontsingel"
+                              },
+                              "huisnummer": {
+                                "type": "number",
+                                "example": 12
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "example": "6521 BC"
+                              },
+                              "plaats": {
+                                "type": "string",
+                                "example": "Nijmegen"
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "naam"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBieren",
+        "description": "Nieuwe bier aanmaken",
+        "summary": "Nieuwe bier aanmaken",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Weizen Tripel"
+                    },
+                    "alcoholPercentage": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 7.6
+                    },
+                    "stijl": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Tripel"
+                        }
+                      }
+                    },
+                    "brouwerij": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "nano",
+                            "micro",
+                            "macro"
+                          ]
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Brouwtoren"
+                        },
+                        "adres": {
+                          "properties": {
+                            "straat": {
+                              "type": "string",
+                              "example": "Waldeck Pyrmontsingel"
+                            },
+                            "huisnummer": {
+                              "type": "number",
+                              "example": 12
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "6521 BC"
+                            },
+                            "plaats": {
+                              "type": "string",
+                              "example": "Nijmegen"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "naam"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "Bad request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Request validation failed"
+                    },
+                    "invalidParams": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "url"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "Invalid URI format"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bieren/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "retrieveBier",
+        "description": "Bier ophalen",
+        "summary": "Bier ophalen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Weizen Tripel"
+                    },
+                    "alcoholPercentage": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 7.6
+                    },
+                    "stijl": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Tripel"
+                        }
+                      }
+                    },
+                    "brouwerij": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "nano",
+                            "micro",
+                            "macro"
+                          ]
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Brouwtoren"
+                        },
+                        "adres": {
+                          "properties": {
+                            "straat": {
+                              "type": "string",
+                              "example": "Waldeck Pyrmontsingel"
+                            },
+                            "huisnummer": {
+                              "type": "number",
+                              "example": 12
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "6521 BC"
+                            },
+                            "plaats": {
+                              "type": "string",
+                              "example": "Nijmegen"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "naam"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Resource does not exist"
+          }
+        }
+      },
+      "put": {
+        "operationId": "editBier",
+        "description": "Bier wijzigen",
+        "summary": "Bier wijzigen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Weizen Tripel"
+                    },
+                    "alcoholPercentage": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 7.6
+                    },
+                    "stijl": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Tripel"
+                        }
+                      }
+                    },
+                    "brouwerij": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "nano",
+                            "micro",
+                            "macro"
+                          ]
+                        },
+                        "naam": {
+                          "type": "string",
+                          "example": "Brouwtoren"
+                        },
+                        "adres": {
+                          "properties": {
+                            "straat": {
+                              "type": "string",
+                              "example": "Waldeck Pyrmontsingel"
+                            },
+                            "huisnummer": {
+                              "type": "number",
+                              "example": 12
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "6521 BC"
+                            },
+                            "plaats": {
+                              "type": "string",
+                              "example": "Nijmegen"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "naam"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "Bad request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Request validation failed"
+                    },
+                    "invalidParams": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "url"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "Invalid URI format"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeBier",
+        "description": "Bier verwijderen",
+        "summary": "Bier verwijderen",
+        "tags": [
+          "Bieren"
+        ],
+        "responses": {
+          "204": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Removed"
+          },
+          "404": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Resource does not exist"
+          }
+        }
+      }
+    },
+    "/stijlen": {
+      "get": {
+        "operationId": "listStijlen",
+        "description": "Endpoint om alle stijlen op te halen. @TODO: Voeg hier eventueel extra informatie toe over het filteren, pagineren, etc.",
+        "summary": "Alle stijlen ophalen",
+        "tags": [
+          "Stijlen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              },
+              "Link": {
+                "description": "Links to the previous, next, last or first pages",
+                "schema": {
+                  "type": "string",
+                  "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+                  "externalDocs": {
+                    "description": "W3C reference",
+                    "url": "https://www.w3.org/wiki/LinkHeader"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                      },
+                      "naam": {
+                        "type": "string",
+                        "example": "Tripel"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stijlen/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "retrieveStijl",
+        "description": "Stijl ophalen",
+        "summary": "Stijl ophalen",
+        "tags": [
+          "Stijlen"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+                    },
+                    "naam": {
+                      "type": "string",
+                      "example": "Tripel"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "headers": {
+              "API-Version": {
+                "description": "Semver of this API",
+                "schema": {
+                  "type": "string",
+                  "example": "1.0.0",
+                  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                  "externalDocs": {
+                    "description": " /core/version-header: Return the full version number in a response header",
+                    "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+                  }
+                }
+              }
+            },
+            "description": "Resource does not exist"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Brouwerij": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "nano",
+              "micro",
+              "macro"
+            ]
+          },
+          "naam": {
+            "type": "string",
+            "example": "Brouwtoren"
+          },
+          "adres": {
+            "properties": {
+              "straat": {
+                "type": "string",
+                "example": "Waldeck Pyrmontsingel"
+              },
+              "huisnummer": {
+                "type": "number",
+                "example": 12
+              },
+              "postcode": {
+                "type": "string",
+                "example": "6521 BC"
+              },
+              "plaats": {
+                "type": "string",
+                "example": "Nijmegen"
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "naam"
+        ]
+      },
+      "Adres": {
+        "properties": {
+          "straat": {
+            "type": "string",
+            "example": "Waldeck Pyrmontsingel"
+          },
+          "huisnummer": {
+            "type": "number",
+            "example": 12
+          },
+          "postcode": {
+            "type": "string",
+            "example": "6521 BC"
+          },
+          "plaats": {
+            "type": "string",
+            "example": "Nijmegen"
+          }
+        }
+      },
+      "Bier": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee92"
+          },
+          "naam": {
+            "type": "string",
+            "example": "Weizen Tripel"
+          },
+          "alcoholPercentage": {
+            "type": "number",
+            "format": "double",
+            "example": 7.6
+          },
+          "stijl": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+              },
+              "naam": {
+                "type": "string",
+                "example": "Tripel"
+              }
+            }
+          },
+          "brouwerij": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee93"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "nano",
+                  "micro",
+                  "macro"
+                ]
+              },
+              "naam": {
+                "type": "string",
+                "example": "Brouwtoren"
+              },
+              "adres": {
+                "properties": {
+                  "straat": {
+                    "type": "string",
+                    "example": "Waldeck Pyrmontsingel"
+                  },
+                  "huisnummer": {
+                    "type": "number",
+                    "example": 12
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "example": "6521 BC"
+                  },
+                  "plaats": {
+                    "type": "string",
+                    "example": "Nijmegen"
+                  }
+                }
+              }
+            },
+            "required": [
+              "type",
+              "naam"
+            ]
+          }
+        }
+      },
+      "Stijl": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          },
+          "naam": {
+            "type": "string",
+            "example": "Tripel"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "id": {
+        "name": "id",
+        "in": "path",
+        "description": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "headers": {
+      "API-Version": {
+        "description": "Semver of this API",
+        "schema": {
+          "type": "string",
+          "example": "1.0.0",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+          "externalDocs": {
+            "description": " /core/version-header: Return the full version number in a response header",
+            "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+          }
+        }
+      },
+      "Link": {
+        "description": "Links to the previous, next, last or first pages",
+        "schema": {
+          "type": "string",
+          "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+          "externalDocs": {
+            "description": "W3C reference",
+            "url": "https://www.w3.org/wiki/LinkHeader"
+          }
+        }
+      }
+    },
+    "responses": {
+      "204": {
+        "headers": {
+          "API-Version": {
+            "description": "Semver of this API",
+            "schema": {
+              "type": "string",
+              "example": "1.0.0",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+              "externalDocs": {
+                "description": " /core/version-header: Return the full version number in a response header",
+                "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+              }
+            }
+          }
+        },
+        "description": "Removed"
+      },
+      "400": {
+        "headers": {
+          "API-Version": {
+            "description": "Semver of this API",
+            "schema": {
+              "type": "string",
+              "example": "1.0.0",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+              "externalDocs": {
+                "description": " /core/version-header: Return the full version number in a response header",
+                "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+              }
+            }
+          },
+          "Link": {
+            "description": "Links to the previous, next, last or first pages",
+            "schema": {
+              "type": "string",
+              "example": "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev', <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'",
+              "externalDocs": {
+                "description": "W3C reference",
+                "url": "https://www.w3.org/wiki/LinkHeader"
+              }
+            }
+          }
+        },
+        "description": "Bad request",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Request validation failed"
+                },
+                "invalidParams": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "url"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "example": "Invalid URI format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "headers": {
+          "API-Version": {
+            "description": "Semver of this API",
+            "schema": {
+              "type": "string",
+              "example": "1.0.0",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+              "externalDocs": {
+                "description": " /core/version-header: Return the full version number in a response header",
+                "url": "https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header"
+              }
+            }
+          }
+        },
+        "description": "Resource does not exist"
+      }
+    }
+  }
+}

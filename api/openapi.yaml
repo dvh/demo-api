@@ -1,0 +1,971 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: developer.overheid@geonovum.nl
+    name: Team Developer Overheid
+    url: https://github.com/orgs/developer-overheid-nl/discussions
+  description: "API om te demonstreren hoe je eenvoudig, design-first, een API kunt\
+    \ ontwikkelen met de tools van developer.overheid.nl."
+  title: Bier API
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/v1
+tags:
+- description: Alle API operaties die bij brouwerijen horen.
+  name: Brouwerijen
+- description: Alle API operaties die bij bieren horen.
+  name: Bieren
+- description: Alle API operaties die bij stijlen horen.
+  name: Stijlen
+paths:
+  /brouwerijen:
+    get:
+      description: "Endpoint om alle brouwerijen op te halen. @TODO: Voeg hier eventueel\
+        \ extra informatie toe over het filteren, pagineren, etc."
+      operationId: listBrouwerijen
+      parameters:
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - nano
+          - micro
+          - macro
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
+                type: array
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Alle brouwerijen ophalen
+      tags:
+      - Brouwerijen
+      x-eov-operation-handler: controllers/BrouwerijenController
+    post:
+      description: Nieuwe brouwerij aanmaken
+      operationId: createBrouwerijen
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
+          description: Created
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/createBrouwerijen_400_response"
+          description: Bad request
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Nieuwe brouwerij aanmaken
+      tags:
+      - Brouwerijen
+      x-eov-operation-handler: controllers/BrouwerijenController
+  /brouwerijen/{id}:
+    delete:
+      description: Brouwerij verwijderen
+      operationId: removeBrouwerij
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Removed
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "404":
+          description: Resource does not exist
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+      summary: Brouwerij verwijderen
+      tags:
+      - Brouwerijen
+      x-eov-operation-handler: controllers/BrouwerijenController
+    get:
+      description: Brouwerij ophalen
+      operationId: retrieveBrouwerij
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "404":
+          description: Resource does not exist
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+      summary: Brouwerij ophalen
+      tags:
+      - Brouwerijen
+      x-eov-operation-handler: controllers/BrouwerijenController
+    put:
+      description: Brouwerij wijzigen
+      operationId: editBrouwerij
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/createBrouwerijen_400_response"
+          description: Bad request
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Brouwerij wijzigen
+      tags:
+      - Brouwerijen
+      x-eov-operation-handler: controllers/BrouwerijenController
+  /bieren:
+    get:
+      description: "Endpoint om alle bieren op te halen. @TODO: Voeg hier eventueel\
+        \ extra informatie toe over het filteren, pagineren, etc."
+      operationId: listBieren
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/listBieren_200_response_inner"
+                type: array
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Alle bieren ophalen
+      tags:
+      - Bieren
+      x-eov-operation-handler: controllers/BierenController
+    post:
+      description: Nieuwe bier aanmaken
+      operationId: createBieren
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBieren_200_response_inner"
+          description: Created
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/createBrouwerijen_400_response"
+          description: Bad request
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Nieuwe bier aanmaken
+      tags:
+      - Bieren
+      x-eov-operation-handler: controllers/BierenController
+  /bieren/{id}:
+    delete:
+      description: Bier verwijderen
+      operationId: removeBier
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Removed
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "404":
+          description: Resource does not exist
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+      summary: Bier verwijderen
+      tags:
+      - Bieren
+      x-eov-operation-handler: controllers/BierenController
+    get:
+      description: Bier ophalen
+      operationId: retrieveBier
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBieren_200_response_inner"
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "404":
+          description: Resource does not exist
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+      summary: Bier ophalen
+      tags:
+      - Bieren
+      x-eov-operation-handler: controllers/BierenController
+    put:
+      description: Bier wijzigen
+      operationId: editBier
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBieren_200_response_inner"
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/createBrouwerijen_400_response"
+          description: Bad request
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Bier wijzigen
+      tags:
+      - Bieren
+      x-eov-operation-handler: controllers/BierenController
+  /stijlen:
+    get:
+      description: "Endpoint om alle stijlen op te halen. @TODO: Voeg hier eventueel\
+        \ extra informatie toe over het filteren, pagineren, etc."
+      operationId: listStijlen
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/listBieren_200_response_inner_stijl"
+                type: array
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+            Link:
+              description: "Links to the previous, next, last or first pages"
+              explode: false
+              schema:
+                example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+                  \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+                externalDocs:
+                  description: W3C reference
+                  url: https://www.w3.org/wiki/LinkHeader
+                type: string
+              style: simple
+      summary: Alle stijlen ophalen
+      tags:
+      - Stijlen
+      x-eov-operation-handler: controllers/StijlenController
+  /stijlen/{id}:
+    get:
+      description: Stijl ophalen
+      operationId: retrieveStijl
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listBieren_200_response_inner_stijl"
+          description: OK
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+        "404":
+          description: Resource does not exist
+          headers:
+            API-Version:
+              description: Semver of this API
+              explode: false
+              schema:
+                example: 1.0.0
+                externalDocs:
+                  description: " /core/version-header: Return the full version number\
+                    \ in a response header"
+                  url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+                pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+                  d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+                  +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+                type: string
+              style: simple
+      summary: Stijl ophalen
+      tags:
+      - Stijlen
+      x-eov-operation-handler: controllers/StijlenController
+components:
+  headers:
+    API-Version:
+      description: Semver of this API
+      explode: false
+      schema:
+        example: 1.0.0
+        externalDocs:
+          description: " /core/version-header: Return the full version number in a\
+            \ response header"
+          url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+        pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+          d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+          +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+        type: string
+      style: simple
+    Link:
+      description: "Links to the previous, next, last or first pages"
+      explode: false
+      schema:
+        example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+          \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+        externalDocs:
+          description: W3C reference
+          url: https://www.w3.org/wiki/LinkHeader
+        type: string
+      style: simple
+  parameters:
+    id:
+      description: id
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+  responses:
+    "204":
+      description: Removed
+      headers:
+        API-Version:
+          description: Semver of this API
+          explode: false
+          schema:
+            example: 1.0.0
+            externalDocs:
+              description: " /core/version-header: Return the full version number\
+                \ in a response header"
+              url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+            pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+              d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+              +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+            type: string
+          style: simple
+    "400":
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/createBrouwerijen_400_response"
+      description: Bad request
+      headers:
+        API-Version:
+          description: Semver of this API
+          explode: false
+          schema:
+            example: 1.0.0
+            externalDocs:
+              description: " /core/version-header: Return the full version number\
+                \ in a response header"
+              url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+            pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+              d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+              +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+            type: string
+          style: simple
+        Link:
+          description: "Links to the previous, next, last or first pages"
+          explode: false
+          schema:
+            example: "<https://developer.overheid.nl/api/v1/apis?page=2>; rel='prev',\
+              \ <https://developer.overheid.nl/api/v1/apis?page=3>; rel='next'"
+            externalDocs:
+              description: W3C reference
+              url: https://www.w3.org/wiki/LinkHeader
+            type: string
+          style: simple
+    "404":
+      description: Resource does not exist
+      headers:
+        API-Version:
+          description: Semver of this API
+          explode: false
+          schema:
+            example: 1.0.0
+            externalDocs:
+              description: " /core/version-header: Return the full version number\
+                \ in a response header"
+              url: https://logius-standaarden.github.io/API-Design-Rules/#/core/version-header
+            pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+              d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+              +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+            type: string
+          style: simple
+  schemas:
+    Brouwerij:
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+          format: uuid
+          type: string
+        type:
+          enum:
+          - nano
+          - micro
+          - macro
+          type: string
+        naam:
+          example: Brouwtoren
+          type: string
+        adres:
+          $ref: "#/components/schemas/listBrouwerijen_200_response_inner_adres"
+      required:
+      - naam
+      - type
+    Adres:
+      properties:
+        straat:
+          example: Waldeck Pyrmontsingel
+          type: string
+        huisnummer:
+          example: 12
+          type: number
+        postcode:
+          example: 6521 BC
+          type: string
+        plaats:
+          example: Nijmegen
+          type: string
+    Bier:
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee92
+          format: uuid
+          type: string
+        naam:
+          example: Weizen Tripel
+          type: string
+        alcoholPercentage:
+          example: 7.6
+          format: double
+          type: number
+        stijl:
+          $ref: "#/components/schemas/listBieren_200_response_inner_stijl"
+        brouwerij:
+          $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
+    Stijl:
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          format: uuid
+          type: string
+        naam:
+          example: Tripel
+          type: string
+    listBrouwerijen_200_response_inner_adres:
+      example:
+        plaats: Nijmegen
+        straat: Waldeck Pyrmontsingel
+        huisnummer: 12
+        postcode: 6521 BC
+      properties:
+        straat:
+          example: Waldeck Pyrmontsingel
+          type: string
+        huisnummer:
+          example: 12
+          type: number
+        postcode:
+          example: 6521 BC
+          type: string
+        plaats:
+          example: Nijmegen
+          type: string
+    listBrouwerijen_200_response_inner:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+        adres:
+          plaats: Nijmegen
+          straat: Waldeck Pyrmontsingel
+          huisnummer: 12
+          postcode: 6521 BC
+        type: nano
+        naam: Brouwtoren
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+          format: uuid
+          type: string
+        type:
+          enum:
+          - nano
+          - micro
+          - macro
+          type: string
+        naam:
+          example: Brouwtoren
+          type: string
+        adres:
+          $ref: "#/components/schemas/listBrouwerijen_200_response_inner_adres"
+      required:
+      - naam
+      - type
+    createBrouwerijen_400_response_invalidParams:
+      properties:
+        name:
+          example: url
+          type: string
+        reason:
+          example: Invalid URI format
+          type: string
+      type: object
+    createBrouwerijen_400_response:
+      properties:
+        title:
+          example: Request validation failed
+          type: string
+        invalidParams:
+          $ref: "#/components/schemas/createBrouwerijen_400_response_invalidParams"
+      type: object
+    listBieren_200_response_inner_stijl:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        naam: Tripel
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          format: uuid
+          type: string
+        naam:
+          example: Tripel
+          type: string
+    listBieren_200_response_inner:
+      example:
+        stijl:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          naam: Tripel
+        brouwerij:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+          adres:
+            plaats: Nijmegen
+            straat: Waldeck Pyrmontsingel
+            huisnummer: 12
+            postcode: 6521 BC
+          type: nano
+          naam: Brouwtoren
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee92
+        naam: Weizen Tripel
+        alcoholPercentage: 7.6
+      properties:
+        id:
+          example: 046b6c7f-0b8a-43b9-b35d-6489e6daee92
+          format: uuid
+          type: string
+        naam:
+          example: Weizen Tripel
+          type: string
+        alcoholPercentage:
+          example: 7.6
+          format: double
+          type: number
+        stijl:
+          $ref: "#/components/schemas/listBieren_200_response_inner_stijl"
+        brouwerij:
+          $ref: "#/components/schemas/listBrouwerijen_200_response_inner"
